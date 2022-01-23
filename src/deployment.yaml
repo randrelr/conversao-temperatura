@@ -1,0 +1,36 @@
+# Deployment da aplicacao web 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: randrelr/conversao-temperatura:v1
+        ports:
+        - containerPort: 80
+
+---
+
+# Servico da app
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  selector:
+    app: web
+  ports:
+    - protocol: TCP
+      port: 80
+      nodePort: 30000
+  type: LoadBalancer
